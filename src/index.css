@@ -1,0 +1,244 @@
+/* src/index.css */
+
+/* 1) Tailwind v4 core (no tailwind.config.js needed) */
+@import 'tailwindcss';
+
+/* 2) Design Tokens (Tailwind v4 @theme) */
+@theme {
+  /* Brand core */
+  --color-hub-cyan: #0ea5b7;
+  --color-hub-cyan-600: #0891a2;
+  --color-hub-cyan-700: #067a89;
+
+  /* Neutrals */
+  --color-ink: #0f172a; /* slate-900 */
+  --color-ink-600: #334155; /* slate-700 */
+  --color-ink-500: #475569; /* slate-600 */
+  --color-ink-400: #64748b; /* slate-500 */
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-panel: color-mix(in oklab, white 85%, var(--color-ink) 15%);
+  --color-panel-strong: color-mix(in oklab, white 75%, var(--color-ink) 25%);
+  --color-ring: color-mix(in oklab, var(--color-hub-cyan) 45%, white);
+
+  /* Semantic */
+  --color-success: #16a34a;
+  --color-danger: #ef4444;
+  --color-warn: #f59e0b;
+  --color-info: var(--color-hub-cyan);
+
+  /* Ghost fills for soft backgrounds */
+  --color-success-ghost: color-mix(in oklab, var(--color-success) 12%, white);
+  --color-danger-ghost: color-mix(in oklab, var(--color-danger) 12%, white);
+  --color-warn-ghost: color-mix(in oklab, var(--color-warn) 12%, white);
+  --color-info-ghost: color-mix(in oklab, var(--color-info) 12%, white);
+
+  /* Typography & radii */
+  --font-sans: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-2xl: 1rem;
+
+  /* Shadows */
+  --shadow-glass: 0 10px 30px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 4px 14px rgba(2, 6, 23, 0.08);
+  --shadow-pop: 0 20px 40px rgba(2, 6, 23, 0.18);
+}
+
+/* 3) Base resets & page background */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply text-ink antialiased;
+    font-family: var(--font-sans);
+    /* soft background gradient */
+    background: radial-gradient(
+      1200px 800px at 18% 12%,
+      #eef3ff 0%,
+      #f7f8fb 35%,
+      #ffffff 100%
+    );
+  }
+}
+
+/* 4) Component primitives (Daisy-like, zero plugin, canonical classes) */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           font-semibold transition active:scale-[0.98]
+           border rounded-(--radius-lg) px-4 py-2 select-none bg-surface;
+    border-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+  .btn:hover {
+    box-shadow: var(--shadow-card);
+  }
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px
+      color-mix(in oklab, var(--color-ring) 50%, transparent);
+  }
+  .btn-primary {
+    color: white;
+    border-color: transparent;
+    background: linear-gradient(
+      135deg,
+      var(--color-hub-cyan) 0%,
+      var(--color-hub-cyan-600) 60%,
+      var(--color-hub-cyan-700) 100%
+    );
+  }
+  .btn-sm {
+    @apply text-sm px-3 py-1.5 rounded-md;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full rounded-(--radius-lg) px-3 py-2 bg-surface
+           font-semibold outline-none transition;
+    border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  }
+  .input:focus {
+    border-color: var(--color-ring);
+    box-shadow: 0 0 0 3px
+      color-mix(in oklab, var(--color-ring) 35%, transparent);
+  }
+  .input-bordered {
+  } /* alias for back-compat */
+
+  /* Toggle (switch) */
+  .toggle {
+    @apply relative inline-flex h-7 w-12 cursor-pointer rounded-full align-middle;
+    background: color-mix(in oklab, var(--color-ink) 12%, white);
+    transition: background 0.16s ease;
+    appearance: none;
+    border: none;
+  }
+  .toggle::after {
+    content: '';
+    @apply absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: left 0.16s ease;
+  }
+  .toggle:checked {
+    background: color-mix(in oklab, var(--color-hub-cyan) 25%, white);
+  }
+  .toggle:checked::after {
+    left: calc(100% - 1.5rem - 0.125rem);
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-extrabold;
+    background: var(--color-info-ghost);
+    color: var(--color-ink-600);
+    border: 1px solid color-mix(in oklab, var(--color-info) 25%, transparent);
+  }
+  .badge-outline {
+    background: transparent;
+    color: var(--color-ink-600);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 20%, transparent);
+  }
+  .badge-success {
+    background: var(--color-success-ghost);
+    color: var(--color-success);
+    border: 1px solid color-mix(in oklab, var(--color-success) 30%, transparent);
+  }
+  .badge-error {
+    background: var(--color-danger-ghost);
+    color: var(--color-danger);
+    border: 1px solid color-mix(in oklab, var(--color-danger) 30%, transparent);
+  }
+  .badge-warn {
+    background: var(--color-warn-ghost);
+    color: var(--color-warn);
+    border: 1px solid color-mix(in oklab, var(--color-warn) 30%, transparent);
+  }
+
+  /* Cards / Panels */
+  .card {
+    @apply rounded-2xl border bg-white p-4;
+    border-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+    box-shadow: var(--shadow-card);
+  }
+  .glass-panel {
+    @apply rounded-2xl border;
+    background: color-mix(in oklab, white 82%, var(--color-ink) 18%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Drawer shell (right slide-over) */
+  .drawer {
+    @apply absolute right-0 top-0 h-full w-[380px] max-w-[85vw] bg-white border-l
+           transition-transform duration-200 shadow-2xl;
+    border-color: color-mix(in oklab, var(--color-ink) 10%, transparent);
+  }
+  .drawer-header {
+    @apply flex items-center justify-between px-4 py-3 text-white font-bold;
+    background: linear-gradient(
+      135deg,
+      var(--color-hub-cyan),
+      color-mix(in oklab, var(--color-hub-cyan) 60%, #0ea5b7)
+    );
+  }
+
+  /* Divider line */
+  .divider {
+    @apply my-3;
+    height: 1px;
+    background: color-mix(in oklab, var(--color-ink) 10%, transparent);
+  }
+
+  /* Alerts */
+  .alert {
+    @apply rounded-(--radius-lg) border px-3 py-2;
+    background: color-mix(in oklab, var(--color-info) 8%, white);
+    border-color: color-mix(in oklab, var(--color-info) 25%, transparent);
+    color: var(--color-ink-600);
+  }
+
+  /* Header strips (use with canonical gradient utility when needed) */
+  .header-strip {
+    @apply text-white rounded-t-2xl px-4 py-3;
+    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #60a5fa 100%);
+  }
+}
+
+/* 5) Optional utility helpers */
+@layer utilities {
+  .shadow-glass {
+    box-shadow: var(--shadow-glass);
+  }
+  .shadow-pop {
+    box-shadow: var(--shadow-pop);
+  }
+  .text-ink {
+    color: var(--color-ink);
+  }
+  .text-ink-500 {
+    color: var(--color-ink-500);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  .ring-brand {
+    box-shadow: 0 0 0 3px
+      color-mix(in oklab, var(--color-ring) 35%, transparent);
+  }
+}
